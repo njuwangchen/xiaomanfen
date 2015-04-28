@@ -1,0 +1,157 @@
+<div class="container" ng-controller="OrderController">
+    <div class="row">
+        <div class="col-md-8">
+            <h2>欢迎您，clark@adaixiu.com</h2>
+        </div>
+        <div class="col-md-4">
+            <br/>
+            <button class="btn btn-default pull-right">退出登录</button>
+        </div>
+    </div>
+    <div class="row">
+        <accordion>
+            <accordion-group is-open="status.open">
+                <accordion-heading>
+                    我的订单
+                    <i class="pull-right glyphicon"
+                       ng-class="{'glyphicon-chevron-down': status.open, 'glyphicon-chevron-right': !status.open}"></i>
+                </accordion-heading>
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>订单号</th>
+                        <th>订单时间</th>
+                        <th>订单状态</th>
+                        <th>订单人</th>
+                        <th>电话</th>
+                        <th>订单地址</th>
+                        <th>城市/City</th>
+                        <th>州/State</th>
+                        <th>国家/Country</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="order in orders">
+                        <td>{{order.order_id}}</td>
+                        <td>{{order.order_time}}</td>
+                        <td>{{order.status}}</td>
+                        <td>{{order.orderer}}</td>
+                        <td>{{order.tel}}</td>
+                        <td>{{order.address_line_1 + ', ' + order.address_line_2}}</td>
+                        <td>{{order.city}}</td>
+                        <td>{{order.state}}</td>
+                        <td>{{order.country}}</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </accordion-group>
+        </accordion>
+    </div>
+    <form class="form-horizontal" role="form" name="order_form" action="https://sandbox.paypal.com/cgi-bin/webscr"
+          method="post" novalidate>
+        <div class="form-group">
+            <label class="control-label col-md-2" for="orderer">订单人姓名：</label>
+
+            <div class="col-md-8">
+                <input type="text" id="orderer" name="orderer" class="form-control" placeholder="请输入订单人姓名"
+                       ng-model="order.orderer" required>
+            </div>
+            <div class="col-md-2 text-center" ng-show="order_form.orderer.$dirty && order_form.orderer.$invalid">
+                <p class="text-danger">姓名不可以为空</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2" for="tel">电话：</label>
+
+            <div class="col-md-8">
+                <input type="text" id="tel" name="tel" class="form-control" placeholder="请输入订单人电话" ng-model="order.tel"
+                       required>
+            </div>
+            <div class="col-md-2 text-center" ng-show="order_form.tel.$dirty && order_form.tel.$invalid">
+                <p class="text-danger">电话不可以为空</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2" for="address_line_1">地址栏第一行：</label>
+
+            <div class="col-md-8">
+                <input type="text" id="address_line_1" name="address_line_1" class="form-control"
+                       placeholder="请输入地址栏第一行" ng-model="order.address_line_1" required>
+            </div>
+            <div class="col-md-2 text-center"
+                 ng-show="order_form.address_line_1.$dirty && order_form.address_line_1.$invalid">
+                <p class="text-danger">地址栏第一行不可以为空</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2" for="address_line_2">地址栏第二行：</label>
+
+            <div class="col-md-8">
+                <input type="text" id="address_line_2" name="address_line_2" class="form-control"
+                       placeholder="请输入地址栏第二行" ng-model="order.address_line_2">
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2" for="zipcode">ZIPCode：</label>
+
+            <div class="col-md-8">
+                <input type="text" id="zipcode" name="zipcode" class="form-control" placeholder="请输入ZIPCode"
+                       ng-model="order.zipcode" required>
+            </div>
+            <div class="col-md-2 text-center" ng-show="order_form.zipcode.$dirty && order_form.zipcode.$invalid">
+                <p class="text-danger">ZIPCode不可以为空</p>
+            </div>
+        </div>
+        <div class="form-group">
+            <label class="control-label col-md-2" for="city">城市/City：</label>
+
+            <div class="col-md-2">
+                <input type="text" class="form-control" id="city" name="city" placeholder="请输入城市" ng-model="order.city"
+                       required>
+            </div>
+            <label class="control-label col-md-1" for="state">州/State：</label>
+
+            <div class="col-md-2">
+                <input type="text" class="form-control" id="state" name="state" placeholder="请输入州"
+                       ng-model="order.state" required>
+            </div>
+            <label class="control-label col-md-1" for="country">国家：</label>
+
+            <div class="col-md-2">
+                <input type="text" class="form-control" id="country" name="country" placeholder="请输入国家"
+                       ng-model="order.country" required>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-2 col-md-offset-2 text-center">
+                <p class="text-danger" ng-show="order_form.city.$dirty && order_form.city.$invalid">城市不可以为空</p>
+            </div>
+            <div class="col-md-2 col-md-offset-1 text-center">
+                <p class="text-danger" ng-show="order_form.state.$dirty && order_form.state.$invalid">州不可以为空</p>
+            </div>
+            <div class="col-md-2 col-md-offset-1 text-center">
+                <p class="text-danger" ng-show="order_form.country.$dirty && order_form.country.$invalid">国家不可以为空</p>
+            </div>
+        </div>
+
+        <input type="hidden" name="cmd" value="_xclick">
+        <input type="hidden" name="business" value="wangchenclark-facilitator@foxmail.com">
+        <input type="hidden" name="item_name" value="Xiao man fen">
+        <input type="hidden" name="item_number" value="SN01">
+        <input type="hidden" name="amount" value="100.00">
+        <input type="hidden" name="currency_code" value="USD">
+        <input type="hidden" name="no_shipping" value="1">
+        <input type="hidden" name="notify_url" value=""/>
+
+        <div class=" form-group">
+            <div class="col-md-8 col-md-offset-2">
+                <!--<input type="image" src="https://www.paypal.com/en_US/i/btn/x-click-but23.gif" name="submit"-->
+                <!--alt="Make payments with PayPal - it's fast, free and secure!">-->
+                <input type="submit" name="submit" value="立即订购（使用PayPal付款）" class="btn btn-default btn-lg btn-block"
+                       ng-click="submitOrder(order)"
+                       ng-disabled="order_form.orderer.$invalid || order_form.tel.$invalid || order_form.address_line_1.$invalid || order_form.zipcode.$invalid
+                         || order_form.city.city.$invalid || order_form.state.$invalid || order_form.country.$invalid">
+            </div>
+        </div>
+    </form>
+</div>

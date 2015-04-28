@@ -1,0 +1,59 @@
+<div class="row">
+    <h2>新用户？请使用邮箱注册</h2>
+</div>
+<br/>
+<br/>
+
+<form role="form" name="register_form" ng-controller="RegisterController" novalidate>
+    <div class="form-group">
+        <div class="row">
+            <label class="control-label" for="name">邮箱</label>
+        </div>
+        <div class="row">
+            <input class="form-control" id="name" name="email" placeholder="请输入您要注册的邮箱" ng-model="user.email"
+                   type="email" autocomplete="off" ng-focus="emailExist=false" required>
+        </div>
+        <br/>
+        <div class="row" ng-show="register_form.email.$dirty && register_form.email.$invalid">
+            <alert type="danger" ng-show="register_form.email.$error.required">邮箱不能为空</alert>
+            <alert type="danger" ng-show="register_form.email.$error.email">邮箱格式不正确</alert>
+        </div>
+        <div class="row" ng-show="emailExist">
+            <alert type="danger">这个邮箱已经被注册过了</alert>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label class="control-label" for="password">密码</label>
+        </div>
+        <div class="row">
+            <input class="form-control" id="password" name="password" placeholder="请设置您的密码" ng-model="user.password"
+                   type="password" autocomplete="off" required minlength="3" maxlength="15">
+        </div>
+        <br/>
+        <div class="row" ng-show="register_form.password.$dirty && register_form.password.$invalid">
+            <alert type="danger" ng-show="register_form.password.$error.required">密码不能为空</alert>
+            <alert type="danger" ng-show="register_form.password.$error.minlength || register_form.password.$error.maxlength">密码长度限制为3-15位</alert>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="row">
+            <label class="control-label" for="password_repeat">重复密码</label>
+        </div>
+        <div class="row">
+            <input class="form-control" id="password_repeat" name="password_repeat" placeholder="请再次输入您设置的密码" ng-model="user.password_repeat"
+                   type="password" autocomplete="off" required>
+        </div>
+        <br/>
+        <div class="row" ng-show="register_form.password_repeat.$dirty">
+            <alert type="danger" ng-show="user.password != user.password_repeat">两次密码输入不一致</alert>
+        </div>
+    </div>
+    <br/>
+
+    <div class="form-group">
+        <div class="row">
+            <button class="btn btn-primary pull-right btn-lg" ng-click="register(user)" ng-disabled="register_form.email.$invalid || register_form.password.$invalid || user.password != user.password_repeat">注册</button>
+        </div>
+    </div>
+</form>

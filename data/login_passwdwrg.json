@@ -1,0 +1,7 @@
+{
+  "isSucceed": false,
+  "emailNotExist": false,
+  "passwdNotRight": true,
+  "loginEmail": "",
+  "token": ""
+}

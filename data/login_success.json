@@ -1,0 +1,7 @@
+{
+  "isSucceed": true,
+  "emailNotExist": false,
+  "passwdNotRight": false,
+  "loginEmail": "clark@adaixiu.com",
+  "token": "abcdefg1234567"
+}
