@@ -1,8 +1,28 @@
 var routerApp = angular.module('routerApp', ['ui.router', 'ui.bootstrap', 'LoginModule', 'OrderModule']);
 
-routerApp.run(function ($rootScope, $state, $stateParams) {
+routerApp.run(function ($rootScope, $state, $stateParams, $window) {
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
+
+    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
+            var token = $window.localStorage['token'];
+            if (token && toState.name == 'index') {
+                event.preventDefault();
+                $state.transitionTo('myOrder');
+            } else if (!token && toState.name == 'myOrder') {
+                event.preventDefault();
+                $state.transitionTo('index');
+            }
+    });
+});
+
+routerApp.factory('UrlService', function(){
+    var rootURL = function getRootURL() {
+        return 'http://138.128.195.52:5000';
+    };
+    return {
+        rootURL: rootURL()
+    };
 });
 
 routerApp.controller('navController', ['$scope', '$state', '$location', '$anchorScroll', function ($scope, $state, $location, $anchorScroll) {

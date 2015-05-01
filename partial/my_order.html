@@ -1,11 +1,11 @@
 <div class="container" ng-controller="OrderController">
     <div class="row">
         <div class="col-md-8">
-            <h2>欢迎您，clark@adaixiu.com</h2>
+            <h2>欢迎您，{{login_email}}</h2>
         </div>
         <div class="col-md-4">
             <br/>
-            <button class="btn btn-default pull-right">退出登录</button>
+            <button class="btn btn-default pull-right" ng-click="logout()">退出登录</button>
         </div>
     </div>
     <div class="row">
@@ -32,10 +32,10 @@
                     </thead>
                     <tbody>
                     <tr ng-repeat="order in orders">
-                        <td>{{order.order_id}}</td>
+                        <td>{{order.id}}</td>
                         <td>{{order.order_time}}</td>
-                        <td>{{order.status}}</td>
-                        <td>{{order.orderer}}</td>
+                        <td>{{order.status_str}}</td>
+                        <td>{{order.orderer_name}}</td>
                         <td>{{order.tel}}</td>
                         <td>{{order.address_line_1 + ', ' + order.address_line_2}}</td>
                         <td>{{order.city}}</td>
@@ -47,16 +47,15 @@
             </accordion-group>
         </accordion>
     </div>
-    <form class="form-horizontal" role="form" name="order_form" action="https://sandbox.paypal.com/cgi-bin/webscr"
-          method="post" novalidate>
+    <form class="form-horizontal" role="form" name="order_form" novalidate>
         <div class="form-group">
-            <label class="control-label col-md-2" for="orderer">订单人姓名：</label>
+            <label class="control-label col-md-2" for="orderer_name">订单人姓名：</label>
 
             <div class="col-md-8">
-                <input type="text" id="orderer" name="orderer" class="form-control" placeholder="请输入订单人姓名"
-                       ng-model="order.orderer" required>
+                <input type="text" id="orderer_name" name="orderer_name" class="form-control" placeholder="请输入订单人姓名"
+                       ng-model="order.orderer_name" required>
             </div>
-            <div class="col-md-2 text-center" ng-show="order_form.orderer.$dirty && order_form.orderer.$invalid">
+            <div class="col-md-2 text-center" ng-show="order_form.orderer_name.$dirty && order_form.orderer_name.$invalid">
                 <p class="text-danger">姓名不可以为空</p>
             </div>
         </div>
@@ -136,21 +135,21 @@
 
         <input type="hidden" name="cmd" value="_xclick">
         <input type="hidden" name="business" value="wangchenclark-facilitator@foxmail.com">
-        <input type="hidden" name="item_name" value="Xiao man fen">
-        <input type="hidden" name="item_number" value="SN01">
+        <input type="hidden" name="item_name" value="xiao man fen">
+        <input type="hidden" name="item_number">
         <input type="hidden" name="amount" value="100.00">
         <input type="hidden" name="currency_code" value="USD">
         <input type="hidden" name="no_shipping" value="1">
-        <input type="hidden" name="notify_url" value=""/>
+        <input type="hidden" name="notify_url">
 
         <div class=" form-group">
             <div class="col-md-8 col-md-offset-2">
                 <!--<input type="image" src="https://www.paypal.com/en_US/i/btn/x-click-but23.gif" name="submit"-->
                 <!--alt="Make payments with PayPal - it's fast, free and secure!">-->
-                <input type="submit" name="submit" value="立即订购（使用PayPal付款）" class="btn btn-default btn-lg btn-block"
+                <button class="btn btn-default btn-lg btn-block"
                        ng-click="submitOrder(order)"
                        ng-disabled="order_form.orderer.$invalid || order_form.tel.$invalid || order_form.address_line_1.$invalid || order_form.zipcode.$invalid
-                         || order_form.city.city.$invalid || order_form.state.$invalid || order_form.country.$invalid">
+                         || order_form.city.city.$invalid || order_form.state.$invalid || order_form.country.$invalid">立即订购（使用PayPal付款)</button>
             </div>
         </div>
     </form>
