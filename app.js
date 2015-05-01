@@ -4,19 +4,32 @@ routerApp.run(function ($rootScope, $state, $stateParams, $window) {
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
 
-    $rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
-            var token = $window.localStorage['token'];
-            if (token && toState.name == 'index') {
-                event.preventDefault();
-                $state.transitionTo('myOrder');
-            } else if (!token && toState.name == 'myOrder') {
-                event.preventDefault();
-                $state.transitionTo('index');
-            }
+    //$state.transitionTo('index');
+
+    //$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
+    //        var token = $window.localStorage['token'];
+    //        if (token && toState.name == 'index') {
+    //            event.preventDefault();
+    //            $state.go('myOrder');
+    //        } else if (!token && toState.name == 'myOrder') {
+    //            event.preventDefault();
+    //            $state.go('index');
+    //        }
+    //});
+
+    $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
+        var requireLogin = toState.data.requireLogin;
+        var token = $window.localStorage['token'];
+
+        if (requireLogin && !token) {
+            event.preventDefault();
+            // get me a login modal!
+            $state.transitionTo('index');
+        }
     });
 });
 
-routerApp.factory('UrlService', function(){
+routerApp.factory('UrlService', function () {
     var rootURL = function getRootURL() {
         return 'http://138.128.195.52:5000';
     };
@@ -29,22 +42,22 @@ routerApp.controller('navController', ['$scope', '$state', '$location', '$anchor
     $scope.scroll_to_about = function () {
         $location.hash('about');
         $anchorScroll();
-    }
+    };
 
     $scope.scroll_to_product = function () {
         $location.hash('product');
         $anchorScroll();
-    }
+    };
 
     $scope.scroll_to_service = function () {
         $location.hash('service');
         $anchorScroll();
-    }
+    };
 
     $scope.scroll_to_contact = function () {
         $location.hash('contact');
         $anchorScroll();
-    }
+    };
 
     $scope.get_service_name = function () {
         var stateName = $state.current.name;
@@ -53,7 +66,7 @@ routerApp.controller('navController', ['$scope', '$state', '$location', '$anchor
         } else {
             return '立即订购';
         }
-    }
+    };
 }]);
 
 routerApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
@@ -89,6 +102,9 @@ routerApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProvid
                 'footer@index': {
                     templateUrl: 'partial/footer.html'
                 }
+            },
+            data: {
+                requireLogin: false
             }
         })
         .state('myOrder', {
@@ -115,6 +131,9 @@ routerApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProvid
                 'footer@myOrder': {
                     templateUrl: 'partial/footer.html'
                 }
+            },
+            data: {
+                requireLogin: true
             }
         });
 }]);
