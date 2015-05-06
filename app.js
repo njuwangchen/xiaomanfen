@@ -1,11 +1,11 @@
-var routerApp = angular.module('routerApp', ['ui.router', 'ui.bootstrap', 'LoginModule', 'OrderModule']);
+var routerApp = angular.module('routerApp', ['ui.router', 'ui.bootstrap', 'LoginModule', 'OrderModule', 'reCAPTCHA']);
 
 routerApp.run(function ($rootScope, $state, $stateParams, $window) {
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
 
-    function initLoginState(){
-        if ($window.localStorage['token']){
+    function initLoginState() {
+        if ($window.localStorage['token']) {
             $rootScope.isLoggedIn = true;
         } else {
             $rootScope.isLoggedIn = false;
@@ -65,7 +65,11 @@ routerApp.controller('navController', ['$scope', '$rootScope', '$state', '$windo
 
 }]);
 
-routerApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
+routerApp.config(['$stateProvider', '$urlRouterProvider', 'reCAPTCHAProvider', function ($stateProvider, $urlRouterProvider, reCAPTCHAProvider) {
+    reCAPTCHAProvider.setPublicKey('xiaomanfenadaixiu');
+    reCAPTCHAProvider.setOptions({
+        theme: 'clean'
+    });
     $urlRouterProvider.otherwise('/index');
     $stateProvider
         .state('index', {

@@ -39,11 +39,12 @@
             <alert type="danger">密码不正确</alert>
         </div>
     </div>
+    <div re-captcha ng-model="user.captcha"></div>
     <br/>
 
     <div class="form-group">
         <div class="row">
-            <button class="btn btn-primary pull-right btn-lg" ng-click="login(user)" ng-disabled="login_form.email.$invalid || login_form.password.$invalid">登录</button>
+            <button class="btn btn-primary pull-right btn-lg" ng-click="login(user)" ng-disabled="login_form.$invalid">登录</button>
         </div>
     </div>
 </form>
