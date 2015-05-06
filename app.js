@@ -115,7 +115,7 @@ routerApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProvid
             }
         })
         .state('myOrder', {
-            url: '/myOrder',
+            url: '/myorder',
             views: {
                 '': {
                     templateUrl: 'frame/my_order.html'
