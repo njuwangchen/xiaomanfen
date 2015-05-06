@@ -66,7 +66,7 @@ routerApp.controller('navController', ['$scope', '$rootScope', '$state', '$windo
 }]);
 
 routerApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
-    $urlRouterProvider.otherwise('/index');
+    //$urlRouterProvider.otherwise('/index');
     $stateProvider
         .state('index', {
             url: '/index',
