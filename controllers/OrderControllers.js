@@ -44,4 +44,10 @@ orderModule.controller('OrderController', ['$scope', '$state', '$http', '$window
         });
     };
 
+    $scope.$watch('status.open', function(newVal, oldVal){
+       if (newVal == true){
+           $scope.getOrders();
+       }
+    });
+
 }]);
