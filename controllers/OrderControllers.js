@@ -44,8 +44,4 @@ orderModule.controller('OrderController', ['$scope', '$state', '$http', '$window
         });
     };
 
-    $scope.logout = function () {
-        window.localStorage.clear();
-        $state.go('index');
-    };
 }]);

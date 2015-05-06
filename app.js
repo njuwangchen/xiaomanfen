@@ -4,18 +4,15 @@ routerApp.run(function ($rootScope, $state, $stateParams, $window) {
     $rootScope.$state = $state;
     $rootScope.$stateParams = $stateParams;
 
-    //$state.transitionTo('index');
+    function initLoginState(){
+        if ($window.localStorage['token']){
+            $rootScope.isLoggedIn = true;
+        } else {
+            $rootScope.isLoggedIn = false;
+        }
+    }
 
-    //$rootScope.$on('$stateChangeStart', function(event, toState, toParams, fromState, fromParams){
-    //        var token = $window.localStorage['token'];
-    //        if (token && toState.name == 'index') {
-    //            event.preventDefault();
-    //            $state.go('myOrder');
-    //        } else if (!token && toState.name == 'myOrder') {
-    //            event.preventDefault();
-    //            $state.go('index');
-    //        }
-    //});
+    initLoginState();
 
     $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
         var requireLogin = toState.data.requireLogin;
@@ -23,8 +20,7 @@ routerApp.run(function ($rootScope, $state, $stateParams, $window) {
 
         if (requireLogin && !token) {
             event.preventDefault();
-            // get me a login modal!
-            $state.transitionTo('index');
+            $state.transitionTo('login');
         }
     });
 });
@@ -38,7 +34,8 @@ routerApp.factory('UrlService', function () {
     };
 });
 
-routerApp.controller('navController', ['$scope', '$state', '$location', '$anchorScroll', function ($scope, $state, $location, $anchorScroll) {
+routerApp.controller('navController', ['$scope', '$rootScope', '$state', '$window', '$location', '$anchorScroll', function ($scope, $rootScope, $state, $window, $location, $anchorScroll) {
+
     $scope.scroll_to_about = function () {
         $location.hash('about');
         $anchorScroll();
@@ -59,14 +56,13 @@ routerApp.controller('navController', ['$scope', '$state', '$location', '$anchor
         $anchorScroll();
     };
 
-    $scope.get_service_name = function () {
-        var stateName = $state.current.name;
-        if (stateName == 'index') {
-            return '注册/登录';
-        } else {
-            return '立即订购';
-        }
+
+    $scope.logout = function () {
+        window.localStorage.clear();
+        $rootScope.isLoggedIn = false;
+        $state.go('login');
     };
+
 }]);
 
 routerApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProvider, $urlRouterProvider) {
@@ -81,20 +77,8 @@ routerApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProvid
                 'navigation@index': {
                     templateUrl: 'partial/navigation.html'
                 },
-                'about@index': {
-                    templateUrl: 'partial/about.html'
-                },
                 'product@index': {
                     templateUrl: 'partial/product.html'
-                },
-                'service@index': {
-                    templateUrl: 'frame/login_and_register.html'
-                },
-                'login_form@index': {
-                    templateUrl: 'partial/login.html'
-                },
-                'register_form@index': {
-                    templateUrl: 'partial/register.html'
                 },
                 'contact@index': {
                     templateUrl: 'partial/contact.html'
@@ -107,26 +91,40 @@ routerApp.config(['$stateProvider', '$urlRouterProvider', function ($stateProvid
                 requireLogin: false
             }
         })
+        .state('login', {
+            url: '/login',
+            views: {
+                '': {
+                    templateUrl: 'frame/login_and_register.html'
+                },
+                'navigation@login': {
+                    templateUrl: 'partial/navigation.html'
+                },
+                'login_form@login': {
+                    templateUrl: 'partial/login.html'
+                },
+                'register_form@login': {
+                    templateUrl: 'partial/register.html'
+                },
+                'footer@login': {
+                    templateUrl: 'partial/footer.html'
+                }
+            },
+            data: {
+                requireLogin: false
+            }
+        })
         .state('myOrder', {
             url: '/myOrder',
             views: {
                 '': {
-                    templateUrl: 'frame/home.html'
+                    templateUrl: 'frame/my_order.html'
                 },
                 'navigation@myOrder': {
                     templateUrl: 'partial/navigation.html'
                 },
-                'about@myOrder': {
-                    templateUrl: 'partial/about.html'
-                },
-                'product@myOrder': {
-                    templateUrl: 'partial/product.html'
-                },
-                'service@myOrder': {
+                'my_order@myOrder': {
                     templateUrl: 'partial/my_order.html'
-                },
-                'contact@myOrder': {
-                    templateUrl: 'partial/contact.html'
                 },
                 'footer@myOrder': {
                     templateUrl: 'partial/footer.html'

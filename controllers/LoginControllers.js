@@ -3,7 +3,7 @@
  */
 var loginModule = angular.module('LoginModule', []);
 
-loginModule.controller('LoginController', ['$scope', '$state', '$http', '$window', 'UrlService', function ($scope, $state, $http, $window, UrlService) {
+loginModule.controller('LoginController', ['$scope', '$rootScope', '$state', '$http', '$window', 'UrlService', function ($scope, $rootScope, $state, $http, $window, UrlService) {
     //控制邮箱提示的信号
     $scope.emailNotExist = false;
     //控制密码提示的信号
@@ -16,6 +16,7 @@ loginModule.controller('LoginController', ['$scope', '$state', '$http', '$window
 
                     $window.localStorage['token'] = data.token;
                     $window.localStorage['login_email'] = data.loginEmail;
+                    $rootScope.isLoggedIn = true;
                     $state.go('myOrder');
                 } else if (data.emailNotExist) {
                     $scope.emailNotExist = true;
