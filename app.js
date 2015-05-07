@@ -66,7 +66,7 @@ routerApp.controller('navController', ['$scope', '$rootScope', '$state', '$windo
 }]);
 
 routerApp.config(['$stateProvider', '$urlRouterProvider', 'reCAPTCHAProvider', function ($stateProvider, $urlRouterProvider, reCAPTCHAProvider) {
-    reCAPTCHAProvider.setPublicKey('xiaomanfenadaixiu');
+    reCAPTCHAProvider.setPublicKey('6LfyK-0SAAAAAAl6V9jBGQgPxemtrpIZ-SPDPd-n');
     reCAPTCHAProvider.setOptions({
         theme: 'clean'
     });
