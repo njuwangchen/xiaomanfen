@@ -3,23 +3,31 @@ var orderModule = angular.module('OrderModule', []);
 orderModule.controller('OrderController', ['$scope', '$state', '$http', '$window', 'UrlService', function ($scope, $state, $http, $window, UrlService) {
     var token = $window.localStorage['token'];
     $scope.login_email = $window.localStorage['login_email'];
+    $scope.status = {};
+    $scope.status.open = false;
+    $scope.showAlert = true;
+
+    $scope.order = {};
 
     $scope.orders = [];
 
-    $scope.getOrders = $http({
-        method: 'GET',
-        url: UrlService.rootURL + '/api/v1/orders',
-        headers: {
-            'token': token
-        }
-    }).success(function (data) {
-        $scope.orders = data;
-    }).error(function (data) {
-        $scope.logout();
-    });
+    $scope.getOrders = function () {
+        $http({
+            method: 'GET',
+            url: UrlService.rootURL + '/api/v1/orders',
+            headers: {
+                'token': token
+            }
+        }).success(function (data) {
+            $scope.orders = data;
+        }).error(function (data) {
+            $scope.logout();
+        });
+    };
 
-    $scope.submitOrder = function (order) {
-        console.log(order);
+    $scope.getOrders();
+
+    $scope.submitOrder = function (order, order_form) {
 
         $http({
             method: 'POST',
@@ -42,12 +50,16 @@ orderModule.controller('OrderController', ['$scope', '$state', '$http', '$window
         }).error(function (data) {
             $scope.logout();
         });
+
+        $scope.showAlert = false;
+        $scope.order = null;
     };
 
-    $scope.$watch('status.open', function(newVal, oldVal){
-       if (newVal == true){
-           $scope.getOrders();
-       }
+    $scope.$watch('status.open', function (newVal, oldVal) {
+        if (newVal == true) {
+            console.log('refresh');
+            $scope.getOrders();
+        }
     });
 
 }]);

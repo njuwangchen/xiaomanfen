@@ -20,14 +20,14 @@ routerApp.run(function ($rootScope, $state, $stateParams, $window) {
 
         if (requireLogin && !token) {
             event.preventDefault();
-            $state.transitionTo('login');
+            $state.transitionTo('register');
         }
     });
 });
 
 routerApp.factory('UrlService', function () {
     var rootURL = function getRootURL() {
-        return 'http://138.128.195.52:5000';
+        return 'http://localhost:5001';
     };
     return {
         rootURL: rootURL()
@@ -65,11 +65,14 @@ routerApp.controller('navController', ['$scope', '$rootScope', '$state', '$windo
 
 }]);
 
-routerApp.config(['$stateProvider', '$urlRouterProvider', 'reCAPTCHAProvider', function ($stateProvider, $urlRouterProvider, reCAPTCHAProvider) {
+routerApp.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', 'reCAPTCHAProvider', function ($stateProvider, $urlRouterProvider, $httpProvider, reCAPTCHAProvider) {
     reCAPTCHAProvider.setPublicKey('6Le2ggYTAAAAAGVkrwZUvQ5sL2gIKx13o5xWH2sH');
     reCAPTCHAProvider.setOptions({
         theme: 'clean'
     });
+
+    $httpProvider.defaults.withCredentials = true;
+
     $urlRouterProvider.otherwise('/index');
     $stateProvider
         .state('index', {
@@ -95,6 +98,26 @@ routerApp.config(['$stateProvider', '$urlRouterProvider', 'reCAPTCHAProvider', f
                 requireLogin: false
             }
         })
+        .state('register', {
+            url: '/register',
+            views: {
+                '': {
+                    templateUrl:'frame/login_and_register.html'
+                },
+                'navigation@register': {
+                    templateUrl: 'partial/navigation.html'
+                },
+                'form_view@register': {
+                    templateUrl: 'partial/register.html'
+                },
+                'footer@register': {
+                    templateUrl: 'partial/footer.html'
+                }
+            },
+            data: {
+                requireLogin: false
+            }
+        })
         .state('login', {
             url: '/login',
             views: {
@@ -104,11 +127,8 @@ routerApp.config(['$stateProvider', '$urlRouterProvider', 'reCAPTCHAProvider', f
                 'navigation@login': {
                     templateUrl: 'partial/navigation.html'
                 },
-                'login_form@login': {
+                'form_view@login': {
                     templateUrl: 'partial/login.html'
-                },
-                'register_form@login': {
-                    templateUrl: 'partial/register.html'
                 },
                 'footer@login': {
                     templateUrl: 'partial/footer.html'

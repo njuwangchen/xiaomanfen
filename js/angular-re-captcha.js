@@ -15,7 +15,7 @@ angular.module('reCAPTCHA', []).provider('reCAPTCHA', function() {
         var scriptTag = $document.createElement('script');
         scriptTag.type = 'text/javascript';
         scriptTag.async = true;
-        scriptTag.src = '//www.google.com/recaptcha/api/js/recaptcha_ajax.js';
+        scriptTag.src = 'js/recaptcha_ajax.js';
         scriptTag.onreadystatechange = function() {
             if (this.readyState == 'complete') {
                 callback();

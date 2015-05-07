@@ -11,6 +11,8 @@ loginModule.controller('LoginController', ['$scope', '$rootScope', '$state', '$h
     //控制密码提示的信号
     $scope.passwdNotRight = false;
 
+    $scope.captchaNotRight = false;
+
     $scope.login = function (user) {
         $http.post(UrlService.rootURL + '/api/v1/login', user)
             .success(function (data, status, headers, config) {
@@ -24,6 +26,8 @@ loginModule.controller('LoginController', ['$scope', '$rootScope', '$state', '$h
                     $scope.emailNotExist = true;
                 } else if (data.passwdNotRight) {
                     $scope.passwdNotRight = true;
+                } else if (data.captchaNotRight) {
+                    $scope.captchaNotRight = true;
                 }
             })
             .error(function (data, status, headers, config) {
@@ -31,11 +35,22 @@ loginModule.controller('LoginController', ['$scope', '$rootScope', '$state', '$h
             });
     };
 
+    $scope.getCaptcha = function () {
+        $http.get(UrlService.rootURL + '/code/')
+            .success(function (data) {
+                $scope.image = data;
+            })
+    };
+
+    $scope.getCaptcha();
+
 }]);
 
 loginModule.controller('RegisterController', ['$scope', '$state', '$http', '$window', 'UrlService', function ($scope, $state, $http, $window, UrlService) {
     //控制邮箱提示的信号
     $scope.emailExist = false;
+
+    $scope.captchaNotRight = false;
 
     $scope.register = function (user) {
         $http.post(UrlService.rootURL + '/api/v1/register', user)
@@ -44,13 +59,25 @@ loginModule.controller('RegisterController', ['$scope', '$state', '$http', '$win
 
                     $window.localStorage['token'] = data.token;
                     $window.localStorage['login_email'] = data.loginEmail;
+                    $rootScope.isLoggedIn = true;
                     $state.go('myOrder');
                 } else if (data.emailExist) {
                     $scope.emailExist = true;
+                } else if (data.captchaNotRight) {
+                    $scope.captchaNotRight = true;
                 }
             })
             .error(function (data, status, headers, config) {
 
             });
     };
+
+    $scope.getCaptcha = function () {
+        $http.get(UrlService.rootURL + '/code/')
+            .success(function (data) {
+                $scope.image = data;
+            })
+    };
+
+    $scope.getCaptcha();
 }]);

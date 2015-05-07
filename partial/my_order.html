@@ -55,7 +55,7 @@
                 <input type="text" id="orderer_name" name="orderer_name" class="form-control" placeholder="请输入订单人姓名"
                        ng-model="order.orderer_name" required>
             </div>
-            <div class="col-md-2 text-center" ng-show="order_form.orderer_name.$dirty && order_form.orderer_name.$invalid">
+            <div class="col-md-2 text-center" ng-show="order_form.orderer_name.$dirty && order_form.orderer_name.$invalid && showAlert">
                 <p class="text-danger">姓名不可以为空</p>
             </div>
         </div>
@@ -66,7 +66,7 @@
                 <input type="text" id="tel" name="tel" class="form-control" placeholder="请输入订单人电话" ng-model="order.tel"
                        required>
             </div>
-            <div class="col-md-2 text-center" ng-show="order_form.tel.$dirty && order_form.tel.$invalid">
+            <div class="col-md-2 text-center" ng-show="order_form.tel.$dirty && order_form.tel.$invalid && showAlert">
                 <p class="text-danger">电话不可以为空</p>
             </div>
         </div>
@@ -78,7 +78,7 @@
                        placeholder="请输入地址栏第一行" ng-model="order.address_line_1" required>
             </div>
             <div class="col-md-2 text-center"
-                 ng-show="order_form.address_line_1.$dirty && order_form.address_line_1.$invalid">
+                 ng-show="order_form.address_line_1.$dirty && order_form.address_line_1.$invalid && showAlert">
                 <p class="text-danger">地址栏第一行不可以为空</p>
             </div>
         </div>
@@ -97,7 +97,7 @@
                 <input type="text" id="zipcode" name="zipcode" class="form-control" placeholder="请输入ZIPCode"
                        ng-model="order.zipcode" required>
             </div>
-            <div class="col-md-2 text-center" ng-show="order_form.zipcode.$dirty && order_form.zipcode.$invalid">
+            <div class="col-md-2 text-center" ng-show="order_form.zipcode.$dirty && order_form.zipcode.$invalid && showAlert">
                 <p class="text-danger">ZIPCode不可以为空</p>
             </div>
         </div>
@@ -123,13 +123,13 @@
         </div>
         <div class="row">
             <div class="col-md-2 col-md-offset-2 text-center">
-                <p class="text-danger" ng-show="order_form.city.$dirty && order_form.city.$invalid">城市不可以为空</p>
+                <p class="text-danger" ng-show="order_form.city.$dirty && order_form.city.$invalid && showAlert">城市不可以为空</p>
             </div>
             <div class="col-md-2 col-md-offset-1 text-center">
-                <p class="text-danger" ng-show="order_form.state.$dirty && order_form.state.$invalid">州不可以为空</p>
+                <p class="text-danger" ng-show="order_form.state.$dirty && order_form.state.$invalid && showAlert">州不可以为空</p>
             </div>
             <div class="col-md-2 col-md-offset-1 text-center">
-                <p class="text-danger" ng-show="order_form.country.$dirty && order_form.country.$invalid">国家不可以为空</p>
+                <p class="text-danger" ng-show="order_form.country.$dirty && order_form.country.$invalid && showAlert">国家不可以为空</p>
             </div>
         </div>
 
@@ -147,7 +147,7 @@
                 <!--<input type="image" src="https://www.paypal.com/en_US/i/btn/x-click-but23.gif" name="submit"-->
                 <!--alt="Make payments with PayPal - it's fast, free and secure!">-->
                 <button class="btn btn-default btn-lg btn-block"
-                       ng-click="submitOrder(order)"
+                       ng-click="submitOrder(order, order_form)"
                        ng-disabled="order_form.orderer.$invalid || order_form.tel.$invalid || order_form.address_line_1.$invalid || order_form.zipcode.$invalid
                          || order_form.city.city.$invalid || order_form.state.$invalid || order_form.country.$invalid">立即订购（使用PayPal付款)</button>
             </div>

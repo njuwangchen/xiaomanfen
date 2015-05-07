@@ -1,6 +1,9 @@
 <div class="row">
     <h2>新用户？请使用邮箱注册</h2>
 </div>
+<div class="row">
+    <p>已有账户，<a href ui-sref="login">请点击这里登录</a></p>
+</div>
 <br/>
 <br/>
 
@@ -49,11 +52,30 @@
             <alert type="danger" ng-show="user.password != user.password_repeat">两次密码输入不一致</alert>
         </div>
     </div>
+    <div class="form-group">
+
+        <div class="row">
+            <label>验证码</label>
+        </div>
+        <div class="row">
+            <!--<div re-captcha ng-model="user.captcha"></div>-->
+            <img ng-src="data:image/JPEG;base64,{{image}}" class="img-responsive" alt="载入失败，请刷新">
+        </div>
+        <br/>
+        <div class="row">
+            <input class="form-control" id="captcha" name="captacha" placeholder="请输入图片中的数字" ng-model="user.captcha"
+                   type="text" autocomplete="off" ng-focus="captchaNotRight=false" required>
+        </div>
+        <br/>
+        <div class="row" ng-show="captchaNotRight">
+            <alert type="danger">验证码不正确</alert>
+        </div>
+    </div>
     <br/>
 
     <div class="form-group">
         <div class="row">
-            <button class="btn btn-primary pull-right btn-lg" ng-click="register(user)" ng-disabled="register_form.email.$invalid || register_form.password.$invalid || user.password != user.password_repeat">注册</button>
+            <button class="btn btn-primary pull-right btn-lg" ng-click="register(user)" ng-disabled="register_form.$invalid || user.password != user.password_repeat">注册</button>
         </div>
     </div>
 </form>
