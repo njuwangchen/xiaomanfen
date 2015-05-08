@@ -7,7 +7,9 @@ orderModule.controller('OrderController', ['$scope', '$state', '$http', '$window
     $scope.status.open = false;
     $scope.showAlert = true;
 
-    $scope.order = {};
+    $scope.order = {
+        type: "0"
+    };
 
     $scope.orders = [];
 
@@ -58,7 +60,7 @@ orderModule.controller('OrderController', ['$scope', '$state', '$http', '$window
     $scope.getOrders();
 
     $scope.submitOrder = function (order, order_form) {
-
+        console.log(order);
         $http({
             method: 'POST',
             url: UrlService.rootURL + '/api/v1/order',
@@ -68,12 +70,6 @@ orderModule.controller('OrderController', ['$scope', '$state', '$http', '$window
             data: order
         }).success(function (data) {
             if (data.isSucceed) {
-                //var order_form = document.forms['order_form'];
-                //order_form.item_number.value = data.order_id;
-                //order_form.notify_url.value = UrlService.rootURL + '/api/v1/ipn';
-                //order_form.action = 'https://sandbox.paypal.com/cgi-bin/webscr';
-                //order_form.method = 'post';
-                //order_form.submit();
                 $scope.pay(data.order_id, data.type);
             } else {
                 $scope.logout();
