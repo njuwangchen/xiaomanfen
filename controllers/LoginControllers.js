@@ -13,20 +13,25 @@ loginModule.controller('LoginController', ['$scope', '$rootScope', '$state', '$h
 
     $scope.captchaNotRight = false;
 
+    $scope.submitDisabled = false;
+
     $scope.login = function (user) {
+        $scope.submitDisabled = true;
         $http.post(UrlService.rootURL + '/api/v1/login', user)
             .success(function (data, status, headers, config) {
                 if (data.isSucceed) {
-
                     $window.localStorage['token'] = data.token;
                     $window.localStorage['login_email'] = data.loginEmail;
                     $rootScope.isLoggedIn = true;
                     $state.go('myOrder');
                 } else if (data.emailNotExist) {
+                    $scope.submitDisabled = false;
                     $scope.emailNotExist = true;
                 } else if (data.passwdNotRight) {
+                    $scope.submitDisabled = false;
                     $scope.passwdNotRight = true;
                 } else if (data.captchaNotRight) {
+                    $scope.submitDisabled = false;
                     $scope.captchaNotRight = true;
                 }
             })
@@ -46,24 +51,30 @@ loginModule.controller('LoginController', ['$scope', '$rootScope', '$state', '$h
 
 }]);
 
-loginModule.controller('RegisterController', ['$scope', '$state', '$http', '$window', 'UrlService', function ($scope, $state, $http, $window, UrlService) {
+loginModule.controller('RegisterController', ['$scope', '$rootScope', '$state', '$http', '$window', 'UrlService', function ($scope, $rootScope, $state, $http, $window, UrlService) {
     //控制邮箱提示的信号
     $scope.emailExist = false;
 
     $scope.captchaNotRight = false;
 
+    $scope.showAlert = true;
+
+    $scope.submitDisabled = false;
+
     $scope.register = function (user) {
+        $scope.submitDisabled = true;
         $http.post(UrlService.rootURL + '/api/v1/register', user)
             .success(function (data, status, headers, config) {
                 if (data.isSucceed) {
-
                     $window.localStorage['token'] = data.token;
                     $window.localStorage['login_email'] = data.loginEmail;
                     $rootScope.isLoggedIn = true;
                     $state.go('myOrder');
                 } else if (data.emailExist) {
+                    $scope.submitDisabled = false;
                     $scope.emailExist = true;
                 } else if (data.captchaNotRight) {
+                    $scope.submitDisabled = false;
                     $scope.captchaNotRight = true;
                 }
             })

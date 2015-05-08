@@ -5,7 +5,8 @@ orderModule.controller('OrderController', ['$scope', '$state', '$http', '$window
     $scope.login_email = $window.localStorage['login_email'];
     $scope.status = {};
     $scope.status.open = false;
-    $scope.showAlert = true;
+
+    $scope.submitDisabled = false;
 
     $scope.order = {
         type: "0"
@@ -60,7 +61,7 @@ orderModule.controller('OrderController', ['$scope', '$state', '$http', '$window
     $scope.getOrders();
 
     $scope.submitOrder = function (order, order_form) {
-        console.log(order);
+        $scope.submitDisabled = true;
         $http({
             method: 'POST',
             url: UrlService.rootURL + '/api/v1/order',
@@ -77,9 +78,6 @@ orderModule.controller('OrderController', ['$scope', '$state', '$http', '$window
         }).error(function (data) {
             $scope.logout();
         });
-
-        $scope.showAlert = false;
-        $scope.order = null;
     };
 
     $scope.$watch('status.open', function (newVal, oldVal) {
