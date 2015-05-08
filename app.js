@@ -27,7 +27,7 @@ routerApp.run(function ($rootScope, $state, $stateParams, $window) {
 
 routerApp.factory('UrlService', function () {
     var rootURL = function getRootURL() {
-        return 'http://bandwagon:5000';
+        return 'http://138.128.195.52:5000';
     };
     return {
         rootURL: rootURL()

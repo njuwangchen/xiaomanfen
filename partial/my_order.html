@@ -20,21 +20,23 @@
                     <thead>
                     <tr>
                         <th class="text-center">订单号</th>
-                        <th class="text-center">订单时间</th>
-                        <th class="text-center">订单状态</th>
-                        <th class="text-center">订单人</th>
+                        <th class="text-center">时间</th>
+                        <th class="text-center">类型</th>
+                        <th class="text-center">状态</th>
+                        <th class="text-center">姓名</th>
                         <th class="text-center">电话</th>
-                        <th class="text-center">订单地址</th>
-                        <th class="text-center">城市/City</th>
-                        <th class="text-center">州/State</th>
-                        <th class="text-center">国家/Country</th>
+                        <th class="text-center">地址</th>
+                        <th class="text-center">城市</th>
+                        <th class="text-center">州</th>
+                        <th class="text-center">国家</th>
                     </tr>
                     </thead>
                     <tbody>
                     <tr ng-repeat="order in orders">
                         <td>XMF3696100{{order.id}}</td>
                         <td>{{order.order_time}}</td>
-                        <td>{{order.status_str}}<p ng-hide="order.status"><a href class="btn btn-default" ng-click="rePay(order.id)">继续付款</a></p></td>
+                        <td><p ng-show="order.type">智能眼镜+蓝牙耳机</p><p ng-hide="order.type">智能眼镜</p></td>
+                        <td>{{order.status_str}}<p ng-hide="order.status"><a href class="btn btn-default" ng-click="pay(order.id, order.type)">继续付款</a></p></td>
                         <td>{{order.orderer_name}}</td>
                         <td>{{order.tel}}</td>
                         <td>{{order.address_line_1 + ', ' + order.address_line_2}}</td>
@@ -132,12 +134,25 @@
                 <p class="text-danger" ng-show="order_form.country.$dirty && order_form.country.$invalid && showAlert">国家不可以为空</p>
             </div>
         </div>
-
+        <div class="form-group">
+            <div class="radio">
+                <label class="col-md-offset-2">
+                    <input type="radio" name="type" checked ng-model="order.type" value="0"/> 只订购智能眼镜
+                </label>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="radio">
+                <label class="col-md-offset-2">
+                    <input type="radio" name="type" ng-model="order.type" value="1"/> 订购智能眼镜+蓝牙耳机
+                </label>
+            </div>
+        </div>
         <input type="hidden" name="cmd" value="_xclick">
         <input type="hidden" name="business" value="wangchenclark-facilitator@foxmail.com">
-        <input type="hidden" name="item_name" value="xiao man fen">
+        <input type="hidden" name="item_name">
         <input type="hidden" name="item_number">
-        <input type="hidden" name="amount" value="100.00">
+        <input type="hidden" name="amount">
         <input type="hidden" name="currency_code" value="USD">
         <input type="hidden" name="no_shipping" value="1">
         <input type="hidden" name="notify_url">

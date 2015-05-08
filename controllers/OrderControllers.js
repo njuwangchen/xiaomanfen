@@ -11,13 +11,34 @@ orderModule.controller('OrderController', ['$scope', '$state', '$http', '$window
 
     $scope.orders = [];
 
-    $scope.rePay = function (order_id) {
+    $scope.payGlass = function (order_id) {
         var order_form = document.forms['order_form'];
+        order_form.item_name.value = 'xiao man fen smart glass';
+        order_form.amount.value = "129.00";
         order_form.item_number.value = order_id;
         order_form.notify_url.value = UrlService.rootURL + '/api/v1/ipn';
         order_form.action = 'https://sandbox.paypal.com/cgi-bin/webscr';
         order_form.method = 'post';
         order_form.submit();
+    };
+
+    $scope.payGlassAndEarphone = function (order_id) {
+        var order_form = document.forms['order_form'];
+        order_form.item_name.value = 'xiao man fen smart glass and earphone set';
+        order_form.amount.value = "149.00";
+        order_form.item_number.value = order_id;
+        order_form.notify_url.value = UrlService.rootURL + '/api/v1/ipn';
+        order_form.action = 'https://sandbox.paypal.com/cgi-bin/webscr';
+        order_form.method = 'post';
+        order_form.submit();
+    };
+
+    $scope.pay = function (order_id, order_type) {
+        if (order_type) {
+            $scope.payGlassAndEarphone(order_id);
+        } else {
+            $scope.payGlass(order_id);
+        }
     };
 
     $scope.getOrders = function () {
@@ -47,12 +68,13 @@ orderModule.controller('OrderController', ['$scope', '$state', '$http', '$window
             data: order
         }).success(function (data) {
             if (data.isSucceed) {
-                var order_form = document.forms['order_form'];
-                order_form.item_number.value = data.order_id;
-                order_form.notify_url.value = UrlService.rootURL + '/api/v1/ipn';
-                order_form.action = 'https://sandbox.paypal.com/cgi-bin/webscr';
-                order_form.method = 'post';
-                order_form.submit();
+                //var order_form = document.forms['order_form'];
+                //order_form.item_number.value = data.order_id;
+                //order_form.notify_url.value = UrlService.rootURL + '/api/v1/ipn';
+                //order_form.action = 'https://sandbox.paypal.com/cgi-bin/webscr';
+                //order_form.method = 'post';
+                //order_form.submit();
+                $scope.pay(data.order_id, data.type);
             } else {
                 $scope.logout();
             }
