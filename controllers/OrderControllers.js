@@ -11,6 +11,15 @@ orderModule.controller('OrderController', ['$scope', '$state', '$http', '$window
 
     $scope.orders = [];
 
+    $scope.rePay = function (order_id) {
+        var order_form = document.forms['order_form'];
+        order_form.item_number.value = order_id;
+        order_form.notify_url.value = UrlService.rootURL + '/api/v1/ipn';
+        order_form.action = 'https://sandbox.paypal.com/cgi-bin/webscr';
+        order_form.method = 'post';
+        order_form.submit();
+    };
+
     $scope.getOrders = function () {
         $http({
             method: 'GET',
