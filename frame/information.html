@@ -1,0 +1,19 @@
+<div ui-view="navigation"></div>
+<div class="container login_form">
+    <div class="row">
+        <div class="col-md-10 col-md-offset-1">
+            <img class="img-responsive img-thumbnail" src="img/xiaomanfen/techspe.jpg" alt="正在加载详细参数..."/>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-8 col-md-offset-2 text-center" ng-hide="$root.isLoggedIn">
+            <h3>您还没有登录，请先<a ui-sref="register">登录/注册</a></h3>
+        </div>
+        <div class="col-md-4 col-md-offset-4" ng-show="$root.isLoggedIn">
+            <br/>
+            <a class="btn btn-primary btn-lg btn-block" ui-sref="myOrder">现在就去预订</a>
+        </div>
+    </div>
+    <br/>
+</div>
+<div ui-view="footer"></div>

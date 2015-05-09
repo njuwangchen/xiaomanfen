@@ -1,4 +1,4 @@
-var routerApp = angular.module('routerApp', ['ui.router', 'ui.bootstrap', 'LoginModule', 'OrderModule', 'reCAPTCHA']);
+var routerApp = angular.module('routerApp', ['ui.router', 'ui.bootstrap', 'LoginModule', 'OrderModule']);
 
 routerApp.run(function ($rootScope, $state, $stateParams, $window) {
     $rootScope.$state = $state;
@@ -65,12 +65,7 @@ routerApp.controller('navController', ['$scope', '$rootScope', '$state', '$windo
 
 }]);
 
-routerApp.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', 'reCAPTCHAProvider', function ($stateProvider, $urlRouterProvider, $httpProvider, reCAPTCHAProvider) {
-    reCAPTCHAProvider.setPublicKey('6Le2ggYTAAAAAGVkrwZUvQ5sL2gIKx13o5xWH2sH');
-    reCAPTCHAProvider.setOptions({
-        theme: 'clean'
-    });
-
+routerApp.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', function ($stateProvider, $urlRouterProvider, $httpProvider) {
     $httpProvider.defaults.withCredentials = true;
 
     $urlRouterProvider.otherwise('/index');
@@ -87,10 +82,24 @@ routerApp.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', 'reCA
                 'product@index': {
                     templateUrl: 'partial/product.html'
                 },
-                'contact@index': {
-                    templateUrl: 'partial/contact.html'
-                },
                 'footer@index': {
+                    templateUrl: 'partial/footer.html'
+                }
+            },
+            data: {
+                requireLogin: false
+            }
+        })
+        .state('information', {
+            url: '/information',
+            views: {
+                '': {
+                    templateUrl: 'frame/information.html'
+                },
+                'navigation@information': {
+                    templateUrl: 'partial/navigation.html'
+                },
+                'footer@information': {
                     templateUrl: 'partial/footer.html'
                 }
             },
@@ -131,6 +140,46 @@ routerApp.config(['$stateProvider', '$urlRouterProvider', '$httpProvider', 'reCA
                     templateUrl: 'partial/login.html'
                 },
                 'footer@login': {
+                    templateUrl: 'partial/footer.html'
+                }
+            },
+            data: {
+                requireLogin: false
+            }
+        })
+        .state('contact', {
+            url: '/contact',
+            views: {
+                '': {
+                    templateUrl: 'frame/static.html'
+                },
+                'navigation@contact': {
+                    templateUrl: 'partial/navigation.html'
+                },
+                'static@contact': {
+                    templateUrl: 'partial/contact.html'
+                },
+                'footer@contact': {
+                    templateUrl: 'partial/footer.html'
+                }
+            },
+            data: {
+                requireLogin: false
+            }
+        })
+        .state('about', {
+            url: '/about',
+            views: {
+                '': {
+                    templateUrl: 'frame/static.html'
+                },
+                'navigation@about': {
+                    templateUrl: 'partial/navigation.html'
+                },
+                'static@about': {
+                    templateUrl: 'partial/about.html'
+                },
+                'footer@about': {
                     templateUrl: 'partial/footer.html'
                 }
             },
