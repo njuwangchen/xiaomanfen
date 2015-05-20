@@ -43,7 +43,7 @@ orderModule.controller('OrderController', ['$scope', '$state', '$http', '$window
     };
 
     $scope.pay = function (order_id, order_type) {
-        $window.sessionStorage['order_id'] = data.order_id;
+        $window.sessionStorage['order_id'] = order_id;
         if (order_type) {
             $scope.payGlassAndEarphone(order_id);
         } else {
