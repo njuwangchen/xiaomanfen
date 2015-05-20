@@ -5,6 +5,15 @@
         </div>
     </div>
     <div class="row">
+        {{count}}
+    </div>
+    <div class="row" ng-show="isShowHandleOrder">
+        <p>正在处理您的订单{{handleOrderId}}的付款情况，请耐心等候</p>
+    </div>
+    <div class="row" ng-show="handleOrderStatus">
+        <p>付款成功！</p>
+    </div>
+    <div class="row">
         <accordion>
             <accordion-group is-open="status.open">
                 <accordion-heading>
@@ -31,8 +40,12 @@
                     <tr ng-repeat="order in orders">
                         <td>XMF3696100{{order.id}}</td>
                         <td>{{order.order_time}}</td>
-                        <td><p ng-show="order.type">智能眼镜+蓝牙耳机</p><p ng-hide="order.type">智能眼镜</p></td>
-                        <td>{{order.status_str}}<p ng-hide="order.status"><a href class="btn btn-default" ng-click="pay(order.id, order.type)">继续付款</a></p></td>
+                        <td><p ng-show="order.type">智能眼镜+蓝牙耳机</p>
+
+                            <p ng-hide="order.type">智能眼镜</p></td>
+                        <td>{{order.status_str}}<p ng-hide="order.status"><a href class="btn btn-default"
+                                                                             ng-click="pay(order.id, order.type)">继续付款</a>
+                        </p></td>
                         <td>{{order.orderer_name}}</td>
                         <td>{{order.tel}}</td>
                         <td>{{order.address_line_1 + ', ' + order.address_line_2}}</td>
@@ -53,7 +66,8 @@
                 <input type="text" id="orderer_name" name="orderer_name" class="form-control" placeholder="请输入订单人姓名"
                        ng-model="order.orderer_name" required>
             </div>
-            <div class="col-md-2 text-center" ng-show="order_form.orderer_name.$dirty && order_form.orderer_name.$invalid ">
+            <div class="col-md-2 text-center"
+                 ng-show="order_form.orderer_name.$dirty && order_form.orderer_name.$invalid ">
                 <p class="text-danger">姓名不可以为空</p>
             </div>
         </div>
@@ -158,9 +172,11 @@
                 <!--<input type="image" src="https://www.paypal.com/en_US/i/btn/x-click-but23.gif" name="submit"-->
                 <!--alt="Make payments with PayPal - it's fast, free and secure!">-->
                 <button class="btn btn-default btn-lg btn-block"
-                       ng-click="submitOrder(order, order_form)"
-                       ng-disabled="order_form.orderer.$invalid || order_form.tel.$invalid || order_form.address_line_1.$invalid || order_form.zipcode.$invalid
-                         || order_form.city.city.$invalid || order_form.state.$invalid || order_form.country.$invalid || submitDisabled">立即订购（使用PayPal付款)</button>
+                        ng-click="submitOrder(order, order_form)"
+                        ng-disabled="order_form.orderer.$invalid || order_form.tel.$invalid || order_form.address_line_1.$invalid || order_form.zipcode.$invalid
+                         || order_form.city.city.$invalid || order_form.state.$invalid || order_form.country.$invalid || submitDisabled">
+                    立即订购（使用PayPal付款)
+                </button>
             </div>
         </div>
     </form>

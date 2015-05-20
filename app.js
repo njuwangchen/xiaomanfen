@@ -28,6 +28,7 @@ routerApp.run(function ($rootScope, $state, $stateParams, $window) {
 routerApp.factory('UrlService', function () {
     var rootURL = function getRootURL() {
         return 'http://138.128.195.52:5000';
+        //return 'http://localhost:5001';
     };
     return {
         rootURL: rootURL()
@@ -58,7 +59,8 @@ routerApp.controller('navController', ['$scope', '$rootScope', '$state', '$windo
 
 
     $scope.logout = function () {
-        window.localStorage.clear();
+        $window.localStorage.clear();
+        $window.sessionStorage.clear();
         $rootScope.isLoggedIn = false;
         $state.go('login');
     };

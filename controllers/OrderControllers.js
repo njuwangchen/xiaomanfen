@@ -1,7 +1,8 @@
 var orderModule = angular.module('OrderModule', []);
 
-orderModule.controller('OrderController', ['$scope', '$state', '$http', '$window', 'UrlService', function ($scope, $state, $http, $window, UrlService) {
+orderModule.controller('OrderController', ['$scope', '$state', '$http', '$window', '$interval', 'UrlService', function ($scope, $state, $http, $window, $interval, UrlService) {
     var token = $window.localStorage['token'];
+
     $scope.login_email = $window.localStorage['login_email'];
     $scope.status = {};
     $scope.status.open = false;
@@ -13,6 +14,11 @@ orderModule.controller('OrderController', ['$scope', '$state', '$http', '$window
     };
 
     $scope.orders = [];
+
+    $scope.isShowHandleOrder = false;
+    $scope.handleOrderId = 0;
+    $scope.handleOrderStatus = false;
+    $scope.count = 1;
 
     $scope.payGlass = function (order_id) {
         var order_form = document.forms['order_form'];
@@ -60,6 +66,51 @@ orderModule.controller('OrderController', ['$scope', '$state', '$http', '$window
 
     $scope.getOrders();
 
+    var check;
+    $scope.startCheck = function () {
+        var order_id = $window.sessionStorage['order_id'];
+
+        if (order_id) {
+            $scope.isShowHandleOrder = true;
+            $scope.handleOrderId = order_id;
+
+            if (angular.isDefined(check)) return;
+
+            check = $interval(function () {
+                $scope.count += 1;
+                $http({
+                    method: 'POST',
+                    url: UrlService.rootURL + '/api/v1/orders/check',
+                    data: {
+                        order_id: $scope.handleOrderId
+                    }
+                }).success(function (data) {
+                    $scope.handleOrderStatus = data.status;
+                    if (data.status) {
+                        $scope.isShowHandleOrder = false;
+                        $scope.stopCheck();
+                    }
+                }).error(function (data) {
+
+                });
+
+            }, 500);
+        }
+    };
+
+    $scope.stopCheck = function () {
+        if (angular.isDefined(check)) {
+            $interval.cancel(check);
+            check = undefined;
+        }
+    };
+
+    $scope.$on('$destroy', function () {
+        $scope.stopCheck();
+    });
+
+    $scope.startCheck();
+
     $scope.submitOrder = function (order, order_form) {
         $scope.submitDisabled = true;
         $http({
@@ -71,6 +122,7 @@ orderModule.controller('OrderController', ['$scope', '$state', '$http', '$window
             data: order
         }).success(function (data) {
             if (data.isSucceed) {
+                $window.sessionStorage['order_id'] = data.order_id;
                 $scope.pay(data.order_id, data.type);
             } else {
                 $scope.logout();
