@@ -43,6 +43,7 @@ orderModule.controller('OrderController', ['$scope', '$state', '$http', '$window
     };
 
     $scope.pay = function (order_id, order_type) {
+        $window.sessionStorage['order_id'] = data.order_id;
         if (order_type) {
             $scope.payGlassAndEarphone(order_id);
         } else {
@@ -88,6 +89,7 @@ orderModule.controller('OrderController', ['$scope', '$state', '$http', '$window
                     $scope.handleOrderStatus = data.status;
                     if (data.status) {
                         $scope.isShowHandleOrder = false;
+                        $scope.status.open = true;
                         $scope.stopCheck();
                     }
                 }).error(function (data) {
@@ -122,7 +124,6 @@ orderModule.controller('OrderController', ['$scope', '$state', '$http', '$window
             data: order
         }).success(function (data) {
             if (data.isSucceed) {
-                $window.sessionStorage['order_id'] = data.order_id;
                 $scope.pay(data.order_id, data.type);
             } else {
                 $scope.logout();

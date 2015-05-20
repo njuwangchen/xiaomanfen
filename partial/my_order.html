@@ -4,14 +4,11 @@
             <h2>欢迎您，{{login_email}}</h2>
         </div>
     </div>
-    <div class="row">
-        {{count}}
-    </div>
     <div class="row" ng-show="isShowHandleOrder">
-        <p>正在处理您的订单{{handleOrderId}}的付款情况，请耐心等候</p>
+        <alert type="danger">正在处理您的订单XMF3696100{{handleOrderId}}的付款情况，请耐心等候，{{count}}秒</alert>
     </div>
     <div class="row" ng-show="handleOrderStatus">
-        <p>付款成功！</p>
+        <alert type="success">订单XMF3696100{{handleOrderId}}付款成功！</alert>
     </div>
     <div class="row">
         <accordion>
