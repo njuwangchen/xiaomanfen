@@ -104,6 +104,7 @@ orderModule.controller('OrderController', ['$scope', '$state', '$http', '$window
         if (angular.isDefined(check)) {
             $interval.cancel(check);
             check = undefined;
+            $window.sessionStorage.clear();
         }
     };
 
